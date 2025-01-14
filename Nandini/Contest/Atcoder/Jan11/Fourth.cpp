@@ -94,19 +94,20 @@ int main() {
 
 void solve() 
 {
-   ll n; cin >> n;
-   vl a(n); ipt(a,n);
+  ll n; cin >> n;
+  vl v(n); ipt(v,n);
+  vl pref(n,0);
+  for(int i=0 ; i<n ; i++)
+  {
+       if(i!=0) pref[i] += pref[i-1];
 
-   ll s=0,e=1,ans=0;
-   while(e<n)
-   {
-     if(a[s]<= (a[e]/2)){
-        ans+= (n-e);
-        s++;
-     }
-     else {
-        e++;
-     }
-   }
-   pe(ans);   
+       v[i]+= (i-pref[i]);
+       if(v[i]>= (n-(i+1))) v[i] -= ((n-(i+1)));
+    
+       else {
+         pref[i+v[i]+1] += 1;
+         v[i] = 0;
+       }
+  } 
+  for(auto it : v) cout << it << " ";
 }
