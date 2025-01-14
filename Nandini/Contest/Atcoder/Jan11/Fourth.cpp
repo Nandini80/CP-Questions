@@ -111,3 +111,21 @@ void solve()
   } 
   for(auto it : v) cout << it << " ";
 }
+/*
+void solve() 
+{
+    int n; cin >> n;
+    vl v(n),ans(n,0);
+    ipt(v,n);
+
+    ordered_set<ll> st;
+    for(int i=0 ; i<n ; ++i){
+        auto it = (st.size()-st.order_of_key(i)); // O(n)
+        ans[i]+= it+v[i];
+        ll give = min((n-i-1),ans[i]);
+        st.insert(i+give);
+        ans[i]-=give;
+    }
+    op(ans,n);
+}
+*/
