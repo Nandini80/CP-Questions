@@ -93,30 +93,6 @@ int main() {
 #define py() cout<<"YES\n"
 #define pn() cout<<"NO\n"
 
-// bool isPossible(vl v,ll m){
-//    vl pos,neg;
-//    int n = v.size();
-//    for(int i=0 ;i <n ; i++){
-//     if(v[i]<0) neg.push_back(v[i]);
-//     else pos.push_back(v[i]);
-//    }
-
-//    ll curr=0,i=0,j=0;
-//    while (i < pos.size()) {
-//         if (curr + pos[i] <= m) {
-//           curr += pos[i++];
-//         }
-//         else if (j == neg.size()) {
-//           return false;
-//         }
-//         else {
-//           curr += neg[j++];
-//           curr = max(0, curr);
-//         }
-//       }
-//    return true;
-// }
-
 bool isPossible(vl v,ll ans){
    vl pos,neg;
    int n = v.size();
@@ -155,3 +131,4 @@ void solve()
   }
   pe(ans);
 }
+
