@@ -1,52 +1,71 @@
-#include <bits/stdc++.h>
-using namespace std;
 
-int factorial_mod(int n, int p) {
-    if (n >= p) return 0; // If n >= p, n! % p = 0
-    int result = 1;
-    for (int i = 1; i <= n; ++i) {
-        result = (result * i) % p;
+#include <stdio.h>
+#include <stdbool.h>
+#define MAXN 300010
+
+// Global arrays to hold the strip and penalties.
+char s[MAXN];
+int a[MAXN];
+
+// Decision function: given a candidate X, can we ensure that every cell
+// that ends up the wrong color has penalty at most X using at most k operations?
+bool canAchieve(int X, int n, int k) {
+    int segments = 0;
+    int i = 0;
+    while(i < n) {
+        // Skip forbidden cells.
+        // A forbidden cell is one that must remain red: 
+        // desired 'R' with a penalty > X.
+        if(s[i] == 'R' && a[i] > X) {
+            i++;
+            continue;
+        }
+        
+        // We are now in an interval (maximal contiguous block with no forbidden cell)
+        // that can be painted blue without error.
+        bool hasMandatory = false; // flag for blue cells that need painting (penalty > X)
+        while(i < n && !(s[i] == 'R' && a[i] > X)) {
+            // A blue cell with penalty > X is "mandatory" to cover:
+            // if not painted, it would remain red and be wrong.
+            if(s[i] == 'B' && a[i] > X) {
+                hasMandatory = true;
+            }
+            i++;
+        }
+        if(hasMandatory) {
+            segments++; // one operation covers this whole interval.
+        }
     }
-    return result;
+    return segments <= k;
 }
 
-void solve() {
-    int t; 
-    cin >> t;
-
-    while (t--) {
-        int n, d;
-        cin >> n >> d;
-
-        // Compute n! % 3, n! % 7, n! % 9
-        int mod3 = factorial_mod(n, 3);
-        int mod7 = factorial_mod(n, 7);
-        int mod9 = factorial_mod(n, 9);
-
-        // Compute d * (n! % p)
-        int d_mod3 = (d * mod3) % 3;
-        int d_mod7 = (d * mod7) % 7;
-        int d_mod9 = (d * mod9) % 9;
-
-        // Check divisibility for odd digits 1, 3, 5, 7, 9
-        vector<int> divisible_odds;
-        for (int odd : {1, 3, 5, 7, 9}) {
-            if (odd % 3 == 0 && d_mod3 != 0) continue;
-            if (odd % 7 == 0 && d_mod7 != 0) continue;
-            if (odd % 9 == 0 && d_mod9 != 0) continue;
-            divisible_odds.push_back(odd);
+int main(void) {
+    int t;
+    scanf("%d", &t);
+    while(t--) {
+        int n, k;
+        scanf("%d %d", &n, &k);
+        scanf("%s", s);
+        int maxPenalty = 0;
+        for (int i = 0; i < n; i++) {
+            scanf("%d", &a[i]);
+            if(a[i] > maxPenalty)
+                maxPenalty = a[i];
         }
-
-        // Output result for this test case
-        for (int i = 0; i < divisible_odds.size(); ++i) {
-            if (i > 0) cout << " ";
-            cout << divisible_odds[i];
+        
+        // Binary search over the answer X (the maximum allowed penalty among errors)
+        int lo = 0, hi = maxPenalty, ans = maxPenalty;
+        while(lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if(canAchieve(mid, n, k)) {
+                ans = mid;
+                hi = mid - 1;
+            } else {
+                lo = mid + 1;
+            }
         }
-        cout << endl;
+        
+        printf("%d\n", ans);
     }
-}
-
-int main() {
-    solve();
     return 0;
 }
