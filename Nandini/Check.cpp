@@ -1,6 +1,5 @@
-
-#include <stdio.h>
-#include <stdbool.h>
+#include<bits/stdc++.h>
+using namespace std;
 #define MAXN 300010
 
 // Global arrays to hold the strip and penalties.

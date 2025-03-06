@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -96,35 +95,39 @@ int main() {
 
 void solve() 
 {
-  ll n, x, k,time=0, pattern = 0;
-  cin >> n >> x >> k;
-  string s;
-  cin >> s;
+  ll n, x, k,time=0;   cin >> n >> x >> k;
+  string pattern = "",prev="",s; cin >> s;
 
   ll i = 0, count = 0;
-  while (count != 2) {
-    // cout << "x=" << x << endl;
-    if (x == 0) {
-      count++;
-      i = 0;
-    }
+  while(time<=k){
+      time++;
+      if(s[i]=='L') x--;
+      else x++;
+      pattern+=s[i];
+      i++;
 
-    if (s[i] == 'L') x--; 
-    else x++; 
+      // if(time>k) break;
+      
+       if(i==n && x!=0){
+          pe(count); return;
+      }
+      if(x==0){
+          // cout << "time: " << time << endl;
+          if(time<=k) count++;
+          // cout << "count=" << count << endl;
+          if(pattern==prev) break;
+          i=0;
+          prev = pattern;
+          pattern = "";
+      }
     
-    i++;  
-    // cout << "count=" << count << endl;
-    if (count == 1) pattern++; 
-
-    // cout << "pattern : " << pattern << endl;
-    if ((i == n && x != 0) || time>=k) {
-    //   cout << "i=" << i << endl;
-      pe(count);
-      return;
-    }
-    i = i%n;
-    time++;
+      i = i%n;
   }
+  // cout << "Here" << "count : " << count << endl;
 
-  cout << 1 + (k - 1)/pattern << endl;
+  if (pattern.size() > 0 && prev==pattern) {
+      cout << count + (k - time) / pattern.size() << endl;
+  } else {
+      cout << count << endl;
+  }
 }
