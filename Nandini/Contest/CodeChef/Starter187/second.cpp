@@ -96,33 +96,17 @@ int main() {
 void solve()
 {
     ll n, x; cin >> n >> x;
-    vector<int> ans(n + 1, 0);
+    vector<int> ans(n + 1);
+    for(int i=1 ;i <=n ; i++) ans[i] = i;
 
     for (int i = 1 ; i <= n ; i++) {
-        bool flag = 1;
-        if (ans[i] != 0) continue;
-
-        for (int j = 0 ; j < 26 ; j++) {
-            if ((x & (1 << j)) == 0) {
-                if ((i & (1 << j)) != 0) {
-                    flag = 0;
-                    break;
-                }
-            }
-        }
-        // cout << "i:" << i << ",flag : " << flag << endl;
-        if (!flag) ans[i] = i;
-        else {
-            int val = 0;
-            for (int j = 0; j < 26; j++) {
-                if ((i & (1 << j)) == 0 && (x & (1 << j)) != 0) {
-                    val |= (1 << j);
-                }
-            }
-            // cout << "Val:" << val << endl;
-            ans[i] = val == 0 ? i : val;
-            ans[val == 0 ? i : val] = i;
-        }
+       if(ans[i]!=i) continue;
+       if((ans[i]|x)!=x) continue; // x me 0 and ans[i] me 0 at same place
+       int j = x^i;
+       // cout << "j:" << j << endl;
+       if(j<1 || j>n) continue;
+       ans[i] = j;
+       ans[j] = i;
     }
 
     for (int i = 1 ; i <= n ; i++) cout << ans[i] << " ";
