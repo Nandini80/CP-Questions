@@ -96,29 +96,24 @@ int main() {
 int mode = 998244353;
 void solve() 
 {
-  ll n; cin >> n;
+  ll n,ans=1; cin >> n;
   string s; cin >> s;
   vl counter(n,0);
   ll count =0;
   for(int i=0 ;i <n-3 ; i++){
     if(s[i]==s[i+2] && s[i+1]==s[i+3] && s[i]!=s[i+1]) counter[i] = 1;
   }   
-
-  for(int i=n-3 ; i>=0 ;i --){
-    if(counter[i]) {
-        count++;
-        ll val = count;
-        if(i+1<n) val-=counter[i+1]?1:0;
-        if(i+2<n) val-=counter[i+2]?1:0;
-        counter[i] = val;
-    }
-  }
   
-  ll ans=1;
-  for(auto it : counter){
-    if(it){
-      ans = (ans + binexp(2, it - 1)) % mode;  
+  vector<int> dp(n,1);
+ 
+  for(int i=n-4 ; i>=0 ;i --){
+    // not pick
+    dp[i] = dp[i+1]%mode;
+    // pick
+    if(s[i]==s[i+2] && s[i+1]==s[i+3] && s[i]!=s[i+1]) {
+        dp[i] = (dp[i]+dp[i+3])%mode;
     }
   }
-  pe(ans);
+  // 1010101010
+  pe(dp[0]);
 }
