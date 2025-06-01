@@ -97,6 +97,16 @@ void solve()
 {
   ll n; cin >> n;
   string s; cin >> s;
+  ll count=0;
+  for(auto it : s){
+    if(it=='1') count++;
+    else count--;
+  }
+
+  if(abs(count)==n){
+    pe(0); return;
+  }
+
   vl before0(n,0), after1(n,0);
   for(int i=0 ; i<n ;i ++){
     if(s[i]=='0') before0[i] = before0[i-1>0?i-1:0]+ 1;
