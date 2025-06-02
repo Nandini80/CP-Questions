@@ -100,9 +100,11 @@ void solve()
    set<int> st;
    for(int i=1 ; i<=x ; i++){
     if(x%i==y) st.insert(i);
-   }   
+   }
 
    vl ans;
+
+   
    for(int i=0 ;i <n ; i++){
      if(st.find(v[i])==st.end()) // no mark
      {
